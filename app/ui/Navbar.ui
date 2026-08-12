@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>337</width>
+    <width>777</width>
     <height>1080</height>
    </rect>
   </property>
@@ -240,13 +240,13 @@ QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
            <property name="minimumSize">
             <size>
              <width>80</width>
-             <height>130</height>
+             <height>100</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>260</width>
-             <height>70</height>
+             <height>50</height>
             </size>
            </property>
            <property name="styleSheet">
@@ -263,7 +263,7 @@ QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap>../../assets/logoladynail.jpg</pixmap>
+            <pixmap>../../assets/Logo.png</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>

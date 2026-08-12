@@ -229,7 +229,7 @@ background-color: #f2f2f2;
                </layout>
               </widget>
              </item>
-             <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+             <item>
               <widget class="QWidget" name="widget_4" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -247,6 +247,22 @@ background-color: #f2f2f2;
                 <string notr="true"/>
                </property>
                <layout class="QHBoxLayout" name="horizontalLayout_3">
+                <item>
+                 <widget class="QLabel" name="label">
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="pixmap">
+                   <pixmap>../../assets/Respaldo.png</pixmap>
+                  </property>
+                  <property name="scaledContents">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
                 <item alignment="Qt::AlignHCenter">
                  <widget class="QPushButton" name="BtnRespaldoExportar">
                   <property name="sizePolicy">
@@ -340,24 +356,7 @@ QPushButton:hover {
             <property name="styleSheet">
              <string notr="true"/>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_3">
-             <item>
-              <widget class="QLabel" name="label">
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="pixmap">
-                <pixmap>../../assets/Respaldo.png</pixmap>
-               </property>
-               <property name="scaledContents">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-            </layout>
+            <layout class="QVBoxLayout" name="verticalLayout_3"/>
            </widget>
           </item>
          </layout>

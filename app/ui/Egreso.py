@@ -348,7 +348,7 @@ class Ui_Egreso(object):
         icon = QtGui.QIcon()
         icon.addPixmap(
             QtGui.QPixmap(
-                "d:\\SYSTOCK\\SYSTOCK\\DESARROLLO\\python\\SYS-Systock\\app\\ui\\../../assets/iconos/eliminar.png"
+                "d:\\SYSTOCK\\SYSTOCK\\DESARROLLO\\python\\SYS-Systock\\app\\ui\\assets/iconos/eliminar.png"
             ),
             QtGui.QIcon.Mode.Normal,
             QtGui.QIcon.State.Off,

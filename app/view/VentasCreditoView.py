@@ -429,9 +429,9 @@ class VentasCredito_View(QWidget, Ui_VentasCredito):
             # Configuración inicial
             max_lines_per_page = 30  # Límite de líneas por página
             current_line = 0  # Contador de líneas
-            empresa_nombre = "LadyNailShop"
+            empresa_nombre = "Lady Nail Spa"
             empresa_direccion = "Pasto, Colombia"
-            empresa_telefono = "+57 316-144-44-74"
+            empresa_telefono = "¡Un espacio creado para ti!"
 
             # Obtener la fecha actual
             fecha_actual = datetime.now().strftime("%d/%m/%Y %H:%M:%S")  # ✅ Correcto

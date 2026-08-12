@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>815</width>
+    <width>736</width>
     <height>866</height>
    </rect>
   </property>
@@ -160,14 +160,14 @@ QPushButton:pressed {
            </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>200</horstretch>
-             <verstretch>200</verstretch>
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
             </sizepolicy>
            </property>
            <property name="maximumSize">
             <size>
              <width>900</width>
-             <height>300</height>
+             <height>200</height>
             </size>
            </property>
            <property name="layoutDirection">
@@ -183,7 +183,7 @@ QPushButton:pressed {
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap>../../assets/logoladynail.jpg</pixmap>
+            <pixmap>../../assets/Logo.png</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
