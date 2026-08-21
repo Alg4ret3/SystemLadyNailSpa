@@ -461,7 +461,7 @@ class VentasA_View(QWidget, Ui_VentasA):
             Total: {total_formateado}
             Método de Pago: {payment_method}
             -----------------------------------------------------------------------------------------------------
-            ¡Gracias por tu compra!
+            ¡Vuelve Pronto!
             -----------------------------------------------------------------------------------------------------
             """
             

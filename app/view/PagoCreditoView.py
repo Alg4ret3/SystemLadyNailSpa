@@ -396,7 +396,7 @@ class PagoCredito_View(QWidget, Ui_PagoCredito):
                     current_line += 1
             hDC.TextOut(x, y, "-----------------------------------------------------------------------------------------------------------------")  # Imprime la línea separadora
             y += line_height  
-            mensaje = "¡Gracias Por cumplir con tu pago!"
+            mensaje = "¡Vuelve Pronto!"
             text_width = hDC.GetTextExtent(mensaje)[0]  # Ancho del texto
             page_width = hDC.GetDeviceCaps(8)  # HORZRES = 8, ancho total de la página en píxeles
 

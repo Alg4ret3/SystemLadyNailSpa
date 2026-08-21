@@ -568,7 +568,7 @@ class VentasCredito_View(QWidget, Ui_VentasCredito):
             Fecha Limite: {limite_pago}
             -----------------------------------------------------------------------------------------------------
 
-            ¡Gracias por tu compra!
+            ¡Vuelve Pronto!
             """
             for line in totales.split("\n"):
                 hDC.TextOut(x, y, line.strip())
