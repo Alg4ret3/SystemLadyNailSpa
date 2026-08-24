@@ -114,6 +114,11 @@ def obtener_caja_por_id(db: Session, id_caja: int):
     return db.query(Caja).filter(Caja.ID_Caja == id_caja).first()
 
 
+def obtener_caja_abierta(db: Session):
+    """Obtiene la caja abierta actualmente, si existe."""
+    return db.query(Caja).filter(Caja.Estado.is_(True)).first()
+
+
 # Actualizar un registro de caja
 def actualizar_caja(
     db: Session,

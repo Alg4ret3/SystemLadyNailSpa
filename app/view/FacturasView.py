@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal
+import logging
 
 from ..ui import Ui_Facturas
 from ..database.database import SessionLocal
@@ -13,6 +14,14 @@ from ..controllers.tipo_ingreso_crud import *
 from ..controllers.ingresos_crud import *
 from ..utils.enviar_notifi import enviar_notificacion
 from ..utils.restructura_ticket import generate_ticket
+from ..utils.imprimir_ticket import imprimir_ticket
+
+logging.basicConfig(
+    filename="systock.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
+logger = logging.getLogger(__name__)
 
 
 class Facturas_View(QWidget, Ui_Facturas):
@@ -37,6 +46,7 @@ class Facturas_View(QWidget, Ui_Facturas):
         self.TablaFacturas.setColumnWidth(6, 120)
 
         self.BtnGenerarTicket.clicked.connect(self.generar_ticket)
+        self.BtnImprimirFactura.clicked.connect(self.imprimir_factura)
         self.BtnEditarFactura.clicked.connect(self.editar_factura)
 
     def showEvent(self, event):
@@ -294,6 +304,60 @@ class Facturas_View(QWidget, Ui_Facturas):
 
         if bandera:
             QMessageBox.warning(self, "Ticket", f"Factura generada exitosamente.")
+
+    def imprimir_factura(self):
+        ids = self.obtener_ids_seleccionados()
+        if not ids:
+            logger.warning("Impresion cancelada: no se selecciono una factura")
+            enviar_notificacion("Advertencia", "Seleccione una factura para imprimir.")
+            return
+
+        logger.info("Solicitud de impresion para factura(s): %s", ids)
+        factura_completa = obtener_factura_completa(self.db, ids[0])
+        if not factura_completa:
+            logger.error("No se encontro la factura seleccionada: %s", ids[0])
+            QMessageBox.warning(self, "Factura", "No se encontró la factura seleccionada.")
+            return
+
+        factura = factura_completa["Factura"]
+        cliente = factura_completa["Cliente"]
+        detalles = factura_completa["Detalles"]
+        try:
+            subtotal = sum(detalle["Subtotal"] for detalle in detalles)
+            delivery_fee = factura["Descuento"]
+            items = [
+                (
+                    detalle.get("Producto", "Producto sin nombre"),
+                    detalle["Cantidad"],
+                    float(detalle["Precio_Unitario"]),
+                    float(detalle["Subtotal"]),
+                )
+                for detalle in detalles
+            ]
+            if factura["MetodoPago"] == "Efectivo":
+                pago = str(factura["Monto_efectivo"])
+            elif factura["MetodoPago"] == "Transferencia":
+                pago = str(factura["Monto_TRANSACCION"])
+            else:
+                pago = f"{factura['Monto_efectivo']}/{factura['Monto_TRANSACCION']}"
+
+            imprimir_ticket(
+                client_name=f"{cliente['Nombre']} {cliente['Apellido']}",
+                client_id=cliente["ID_Cliente"],
+                client_address=cliente["Direccion"],
+                client_phone=cliente["Teléfono"],
+                items=items,
+                subtotal=float(subtotal),
+                delivery_fee=float(delivery_fee),
+                total=float(subtotal - delivery_fee),
+                payment_method=factura["MetodoPago"],
+                invoice_number=factura["ID_Factura"],
+            )
+            logger.info("Factura impresa correctamente: %s", factura["ID_Factura"])
+            QMessageBox.information(self, "Éxito", "Factura enviada a la impresora.")
+        except Exception as e:
+            logger.exception("Error al imprimir factura %s", ids[0])
+            QMessageBox.critical(self, "Error", f"Error al imprimir la factura: {e}")
 
     def editar_factura(self):
         """Abrir ventana de ventas con los datos de la factura seleccionada."""

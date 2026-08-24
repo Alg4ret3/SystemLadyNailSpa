@@ -67,10 +67,10 @@ def generate_ticket(
 
         # Encabezado del ticket (solo se dibuja en la primera página)
         pdf.setFont("Helvetica-Bold", 22)
-        pdf.drawCentredString(pdf_width / 2, pdf_height - 30, "Lady NailShop")
+        pdf.drawCentredString(pdf_width / 2, pdf_height - 30, "Lady NailSpa")
         pdf.drawCentredString(pdf_width / 2, pdf_height - 60, "Pasto, Colombia")
         pdf.drawCentredString(
-            pdf_width / 2, pdf_height - 90, "Teléfono: +57 316 144 4474"
+            pdf_width / 2, pdf_height - 90, "Teléfono:"
         )
         pdf.drawCentredString(
             pdf_width / 2,
@@ -187,7 +187,7 @@ def generate_ticket(
         pdf.rect(0, 0, pdf_width, footer_height, fill=True, stroke=False)
         pdf.setFillColor(colors.black)
         pdf.setFont("Helvetica-Bold", 24)
-        pdf.drawCentredString(pdf_width / 2, 30, "¡Gracias por tu compra!")
+        pdf.drawCentredString(pdf_width / 2, 30, "¡factura pdf!")
 
         # Guardar el PDF
         pdf.save()

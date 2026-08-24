@@ -16,6 +16,7 @@ from ..controllers.metodo_pago_crud import *
 from ..controllers.ingresos_crud import *
 from ..controllers.tipo_ingreso_crud import *
 from ..controllers.clientes_crud import *
+from ..controllers.caja_crud import *
 from ..controllers.ingresos_crud import *
 from ..controllers.historial_modificacion_crud import *
 from ..ui import Ui_VentasA
@@ -208,6 +209,9 @@ class VentasA_View(QWidget, Ui_VentasA):
         if self.tableWidget.rowCount() == 0:
             QMessageBox.warning(self, "Error", "No hay productos en la venta.")
             self.InputCodigo.setFocus()
+            return
+        if not obtener_caja_abierta(self.db):
+            QMessageBox.warning(self, "Caja cerrada", "Debe abrir una caja antes de realizar ventas.")
             return
         try:
             # Obtener datos del cliente
