@@ -5,11 +5,11 @@ from pathlib import Path
 import os
 
 # Obtener la carpeta segura para almacenar la base de datos
-app_data_dir = Path(os.getenv("APPDATA") or os.path.expanduser("~/.local/share")) / "Systock"
+app_data_dir = Path(os.getenv("APPDATA") or os.path.expanduser("~/.local/share")) / "LadyNailSpa"
 app_data_dir.mkdir(parents=True, exist_ok=True)  # Crea el directorio si no existe
 
 # Nueva ruta para la base de datos
-DATABASE_PATH = app_data_dir / "systock.db"
+DATABASE_PATH = app_data_dir / "LadyNailSpa.db"
 DATABASE_URL = f"sqlite:///{DATABASE_PATH}"  # Formato correcto para SQLAlchemy
 
 # Crear el motor de conexión

@@ -5,3 +5,9 @@ systock.db
 __pycache__/
 .pyc
 /instalable/
+
+venv
+
+build/*
+dist/*
+main.spec
