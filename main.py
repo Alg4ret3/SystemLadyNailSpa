@@ -51,6 +51,7 @@ class MainWindow(QMainWindow):
 
         self.Login = Login_View()
         self.MainApp = MainApp()
+        self.MainApp.facturas.BtnEditarFactura.setEnabled(False)
 
         self.stacked_widget.addWidget(self.Login)
         self.stacked_widget.addWidget(self.MainApp)
@@ -164,8 +165,6 @@ class MainWindow(QMainWindow):
         self.usuario_actual_id = usuario_autenticado.ID_Usuario
         self.MainApp.ventasA.usuario_actual_id = usuario_autenticado.ID_Usuario
         self.MainApp.ventasB.usuario_actual_id = usuario_autenticado.ID_Usuario
-        self.MainApp.ventasCredito.usuario_actual_id = usuario_autenticado.ID_Usuario
-        self.MainApp.pagoCredito.usuario_actual_id = usuario_autenticado.ID_Usuario
         self.MainApp.caja.usuario_actual_id = usuario_autenticado.ID_Usuario
         token = self.generar_token(usuario_autenticado.ID_Usuario, rol)
 
@@ -202,26 +201,25 @@ class MainWindow(QMainWindow):
         """
         self.MainApp.stacked_widget.setCurrentIndex(0)
         navbar = self.MainApp.navbar
+        facturas = self.MainApp.facturas
 
         if rol == "ADMINISTRADOR":
+            facturas.BtnEditarFactura.setEnabled(True)
             navbar.BtnVentas.setEnabled(True)
             navbar.BtnCaja.setEnabled(True)
-            navbar.BtnCredito.setEnabled(True)
             navbar.BtnEgreso.setEnabled(True)
             navbar.BtnRespaldo.setEnabled(True)
             navbar.BtnProductos.setEnabled(True)
-            navbar.BtnCrediFactura.setEnabled(True)
             navbar.BtnFacturas.setEnabled(True)
             navbar.BtnReportes.setEnabled(True)
             navbar.BtnControlUsuario.setEnabled(True)
         elif rol == "ASESOR":
+            facturas.BtnEditarFactura.setEnabled(False)
             navbar.BtnVentas.setEnabled(True)
             navbar.BtnCaja.setEnabled(True)
-            navbar.BtnCredito.setEnabled(True)
             navbar.BtnEgreso.setEnabled(True)
             navbar.BtnRespaldo.setEnabled(False)
             navbar.BtnProductos.setEnabled(False)
-            navbar.BtnCrediFactura.setEnabled(True)
             navbar.BtnFacturas.setEnabled(True)
             navbar.BtnReportes.setEnabled(False)
             navbar.BtnControlUsuario.setEnabled(False)

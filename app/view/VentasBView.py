@@ -65,7 +65,6 @@ class VentasB_View(QWidget, Ui_VentasB):
         """)
         self.InputCodigo.setPlaceholderText("Ej: 7709991003078")
         self.InputNombre.setPlaceholderText("Ej: Esmalte")
-        self.InputDomicilio.setPlaceholderText("Ej: 5000")
         self.InputDescuentoB.setPlaceholderText("Ej: 500")
         # Inicialización y configuración
         self.limpiar_tabla()
@@ -79,7 +78,6 @@ class VentasB_View(QWidget, Ui_VentasB):
         self.InputCodigo.textChanged.connect(self.iniciar_timer)
         self.InputCantidad.returnPressed.connect(self.actualizar_datos)
         self.InputPrecioMayor.returnPressed.connect(self.actualizar_datos)
-        self.InputDomicilio.textChanged.connect(self.actualizar_total)
         self.InputCedula.textChanged.connect(self.validar_campos)
         self.InputCedula.returnPressed.connect(self.completar_campos)
         self.InputDescuentoB.textChanged.connect(self.aplicar_descuento)
@@ -294,11 +292,11 @@ class VentasB_View(QWidget, Ui_VentasB):
 
             # Calcular totales
             subtotal = sum(item[3] for item in items)
-            delivery_fee = float(self.InputDomicilio.text()) if self.InputDomicilio.text() else 0.0
-            total = (subtotal + delivery_fee) - descuento
+            delivery_fee = 0.0
+            total = subtotal - descuento
             pago = self.InputPago.text().strip()
             
-            domicilio = True if delivery_fee > 0 else False
+            domicilio = False
             
             if self.invoice_number and self.invoice_number != "":
                 self.actualizar_factura(db, self.invoice_number, payment_method, produc_datos, monto_pago, delivery_fee, self.usuario_actual_id)
@@ -484,7 +482,6 @@ class VentasB_View(QWidget, Ui_VentasB):
 
         self.limpiar_tabla()
         self.limpiar_campos()
-        self.InputDomicilio.clear()
         self.limpiar_datos_cliente()
         self.invoice_number = None
                   
@@ -692,8 +689,6 @@ class VentasB_View(QWidget, Ui_VentasB):
         if self.focusWidget() == self.InputCodigo:
             self.InputNombre.setFocus()
         elif self.focusWidget() == self.InputNombre:
-            self.InputDomicilio.setFocus()
-        elif self.focusWidget() == self.InputDomicilio:
             self.InputCedula.setFocus()
         elif self.focusWidget() == self.InputCedula:
             self.InputNombreCli.setFocus()
@@ -714,8 +709,6 @@ class VentasB_View(QWidget, Ui_VentasB):
         elif self.focusWidget() == self.InputNombreCli:
             self.InputCedula.setFocus()
         elif self.focusWidget() == self.InputCedula:
-            self.InputDomicilio.setFocus()
-        elif self.focusWidget() == self.InputDomicilio:
             self.InputNombre.setFocus()
         elif self.focusWidget() == self.InputNombre:
             self.InputCodigo.setFocus()  # Volv
@@ -993,18 +986,7 @@ class VentasB_View(QWidget, Ui_VentasB):
             )
             
     def obtener_valor_domicilio(self):
-        if self.InputDomicilio.isEnabled():
-            VarDomicilio = self.InputDomicilio.text().strip()
-            try:
-                self.valor_domicilio = float(VarDomicilio) if VarDomicilio else 0.0
-            except ValueError:
-                QMessageBox.warning(self, "Error", "Ingrese un número válido.")
-                self.valor_domicilio = 0.0  # Resetear el valor
-                self.InputDomicilio.clear()  # Limpiar el input
-                return 0.0
-            return self.valor_domicilio
-        else:
-            return self.valor_domicilio  # Retornar el valor actual
+        return 0.0
 
     def calcular_subtotal(self):
         # Calcular el subtotal sumando los valores de la columna "Total" (columna 6)
@@ -1130,10 +1112,6 @@ class VentasB_View(QWidget, Ui_VentasB):
                     self.InputPrecioMayor.setText(precio_unitario)
 
                     self.fila_seleccionada = row
-                    self.InputDomicilio.setEnabled(True)
-
-                    # *** MOSTRAR el valor de self.valor_domicilio en InputDomicilio ***
-                    self.InputDomicilio.setText(str(self.valor_domicilio))
                     self.InputCantidad.setFocus()
 
                 else:
@@ -1145,7 +1123,6 @@ class VentasB_View(QWidget, Ui_VentasB):
             else:
                 QMessageBox.warning(self, "Error", "Fila seleccionada fuera de rango.")
                 self.fila_seleccionada = None
-                self.InputDomicilio.clear()
         except (
             AttributeError
         ):  # Capturar la excepcion en caso de que algun item sea None
@@ -1165,7 +1142,6 @@ class VentasB_View(QWidget, Ui_VentasB):
             try:
                 cantidad_str = self.InputCantidad.text().strip()
                 precio_unitario_str = self.InputPrecioMayor.text().strip()
-                #domicilio_str = self.InputDomicilio.text().strip()
 
                 if not cantidad_str or not precio_unitario_str:
                     QMessageBox.warning(
@@ -1301,12 +1277,6 @@ class VentasB_View(QWidget, Ui_VentasB):
         validator_precioU = QRegularExpressionValidator(rx_precioU)
         self.InputPrecioMayor.setValidator(validator_precioU)
         
-        rx_domicilio = QRegularExpression(
-            r"^\d+\.\d+$"
-        )  # Expresión para números y puntos
-        validator_domicilio = QRegularExpressionValidator(rx_domicilio)
-        self.InputDomicilio.setValidator(validator_domicilio)
-
         rx_cantidad = QRegularExpression(r"^\d+$")  # Expresión para solo números
         validator_cantidad = QRegularExpressionValidator(rx_cantidad)
         self.InputCantidad.setValidator(validator_cantidad)

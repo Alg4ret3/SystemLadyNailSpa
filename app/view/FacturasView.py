@@ -36,12 +36,8 @@ class Facturas_View(QWidget, Ui_Facturas):
         self.TablaFacturas.setColumnWidth(5, 120)
         self.TablaFacturas.setColumnWidth(6, 120)
 
-
-        self.BtnEliminarFactura.clicked.connect(self.eliminar_factura)
         self.BtnGenerarTicket.clicked.connect(self.generar_ticket)
-        self.BtnFacturaPagada.clicked.connect(self.factura_pagada)
         self.BtnEditarFactura.clicked.connect(self.editar_factura)
-        self.BtnVerCancelarVenta.clicked.connect(self.cancelar_venta)
 
     def showEvent(self, event):
         super().showEvent(event)
@@ -50,45 +46,6 @@ class Facturas_View(QWidget, Ui_Facturas):
         self.InputBuscador.clear()
                         
     
-    def cancelar_venta(self):
-        ids = self.obtener_ids_seleccionados()
-
-        if not ids:
-            enviar_notificacion(
-                "Advertencia", "No se seleccionaron facturas para cancelar."
-            )
-            return
-        
-        for id_factura in ids:
-            facturas = obtener_factura_por_id(self.db, id_factura)
-            if facturas.Estado == True:
-                QMessageBox.warning(self, "Factura", f"La factura {id_factura} ya está pagada.")
-                return 
-            
-            if facturas.tipofactura == "Credito":
-                QMessageBox.warning(self, "Factura", f"La factura {id_factura} no es una factura de venta.")
-                return
-
-            factura_completa = obtener_factura_completa(self.db, id_factura)
-            
-            productos = factura_completa["Detalles"]
-            
-            for producto in productos:
-                id_producto = producto["ID_Producto"]
-                cantidad = producto["Cantidad"]
-                
-                producto = obtener_producto_por_id(self.db, id_producto)
-                
-                stock = producto[0].Stock_actual
-                cantidad = cantidad + stock
-                actualizar_producto(db=self.db, id_producto=id_producto, stock_actual=cantidad)
-                
-            eliminar_factura(self.db, id_factura)
-            
-        self.limpiar_tabla_facturas()
-        self.mostrar_facturas()
-        enviar_notificacion("Éxito", "Factura(s) cancelada(s) correctamente.")
-        
     def mostrar_facturas(self):
         # Obtener datos de la tabla
         self.db = SessionLocal()
@@ -337,49 +294,6 @@ class Facturas_View(QWidget, Ui_Facturas):
 
         if bandera:
             QMessageBox.warning(self, "Ticket", f"Factura generada exitosamente.")
-
-    def factura_pagada(self):
-        """
-        Marca la factura como pagada.
-        """
-        ids = self.obtener_ids_seleccionados()
-
-        if not ids:
-            enviar_notificacion(
-                "Advertencia", "No se seleccionaron productos para marcar como pagada."
-            )
-            return       
-        
-        try:
-            db = SessionLocal()
-
-            for id_factura in ids:
-                factura = obtener_factura_por_id(db=db, id_factura=id_factura)
-                
-                if factura.tipofactura == "Credito":
-                    QMessageBox.warning(self, "Factura", f"La factura {id_factura} no es una factura de venta.")
-                    return
-                
-                if factura.Estado == True:
-                    QMessageBox.warning(
-                        self, "Factura", f"La factura {id_factura} ya está pagada."
-                    )
-                else:
-                    actualizar_factura(db=db, id_factura=id_factura, estado=True)
-                    tipo_ingreso = crear_tipo_ingreso(db=db, tipo_ingreso="Venta", id_factura=id_factura)
-                    crear_ingreso(db=db, id_tipo_ingreso=tipo_ingreso.ID_Tipo_Ingreso)
-            db.commit()
-            enviar_notificacion(
-                "Éxito", "Factura(s) marcada(s) como pagada(s) correctamente."
-            )
-            self.limpiar_tabla_facturas()
-            self.mostrar_facturas()
-        except Exception as e:
-            enviar_notificacion(
-                "Error", f"Error al marcar factura(s) como pagada(s): {e}"
-            )
-        finally:
-            db.close()
 
     def editar_factura(self):
         """Abrir ventana de ventas con los datos de la factura seleccionada."""

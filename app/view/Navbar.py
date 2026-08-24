@@ -16,10 +16,8 @@ class Navbar_View(QWidget, Ui_Navbar):
 
         self.button_group = QButtonGroup(self)
         self.button_group.addButton(self.BtnVentas)
-        self.button_group.addButton(self.BtnCredito)
         self.button_group.addButton(self.BtnProductos)
         self.button_group.addButton(self.BtnCaja)
-        self.button_group.addButton(self.BtnCrediFactura)
         self.button_group.addButton(self.BtnControlUsuario)
         self.button_group.addButton(self.BtnEgreso)
         self.button_group.addButton(self.BtnFacturas)
