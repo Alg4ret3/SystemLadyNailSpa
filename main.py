@@ -30,8 +30,8 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
 
         self.usuario_actual_id = None
-        self.setWindowTitle("Systock")
-        self.setWindowIcon(QIcon("assets/logo1.ico"))
+        self.setWindowTitle("LadyNailSpa")
+        self.setWindowIcon(QIcon("assets/Icono.ico"))
         self.inicializar_db()
         self.resize(800, 600)
         
@@ -64,10 +64,10 @@ class MainWindow(QMainWindow):
         self.db = conectar_base()
 
     def inicializar_db(self):
-        app_data_dir = Path(os.getenv("APPDATA") or os.path.expanduser("~")) / "Systock"
+        app_data_dir = Path(os.getenv("APPDATA") or os.path.expanduser("~")) / "LadyNailSpa"
         app_data_dir.mkdir(parents=True, exist_ok=True)  # Crea el directorio si no existe
 
-        db_path = app_data_dir / "systock.db"
+        db_path = app_data_dir / "LadyNailSpa.db"
 
         if not db_path.exists():
             progress = QProgressDialog("Creando la base de datos...      ", None, 0, 0, self)
